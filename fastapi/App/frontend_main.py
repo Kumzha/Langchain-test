@@ -60,10 +60,13 @@ if promt:
     else:    
         st.session_state['conversation'].append({"role": "user", "content": promt})
 
-        # Send the conversation to the Flowise API 
-        response = query({'history': st.session_state['conversation'], 'question': promt})
+        # Send the message to the backend
+        payload = {'history': st.session_state['conversation'], 'question': promt}
 
-        st.session_state['conversation'].append({"role": "assistant", "content": response['text']})
+        response = requests.post("http://localhost:5000/submitMessage", json=payload)
+        print(response)
+    
+        st.session_state['conversation'].append({"role": "assistant", "content": response.json()['text']})
 
 for message in st.session_state['conversation']:
     with st.chat_message(message["role"]):
