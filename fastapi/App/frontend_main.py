@@ -5,6 +5,7 @@ from backend_main import file_content
 
 # API endpoints
 API_MESSAGE_URL = "http://localhost:3000/api/v1/prediction/ba863175-2e49-450a-9e98-02cd7b738495"
+API_UPSERT_URL = "http://localhost:3000/api/v1/vector/upsert/ba863175-2e49-450a-9e98-02cd7b738495"
 
 # Session state variables
 
@@ -50,6 +51,8 @@ if uploaded_file is not None:
         else:
             st.error("Failed to submit the file.")
 
+        requests.post(API_UPSERT_URL)    
+
 # User input     
 if promt:
     if uploaded_file is  None:
@@ -60,11 +63,7 @@ if promt:
         # Send the conversation to the Flowise API 
         response = query({'history': st.session_state['conversation'], 'question': promt})
 
-        if(response['error']):
-            st.error(response['error'])
-            st.session_state['conversation'].append({"role": "assistant", "content": "I was unable to respond to your quesiton: duo to an error: " + response['error']})
-        else:
-            st.session_state['conversation'].append({"role": "assistant", "content": response['text']})
+        st.session_state['conversation'].append({"role": "assistant", "content": response['text']})
 
 for message in st.session_state['conversation']:
     with st.chat_message(message["role"]):

@@ -12,12 +12,10 @@ file_content = None
 @app.post("/submitFile")
 def submit_file(payload: FileSubmitRequest):
 
-    payload.model_validate()
     global file_content
     file_content = payload
 
     # Send upsert request to Flowise Api    
-    requests.post(API_UPSERT_URL)
 
     return file_content
 
