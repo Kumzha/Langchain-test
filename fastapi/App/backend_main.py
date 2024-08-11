@@ -13,10 +13,11 @@ file_content = None
 def submit_file(payload: FileSubmitRequest):
 
     global file_content
-    file_content = payload
+    file_content = payload 
 
-    # Send upsert request to Flowise Api    
-
+    # Upsert the file content to the vector database
+    requests.post(API_UPSERT_URL)  
+    
     return file_content
 
 
@@ -25,10 +26,8 @@ def submit_file():
 
     return file_content 
 
-
 @app.post("/submitMessage")
 def submit_message(payload: MessageSubmitRequest):
 
     response = requests.post(API_MESSAGE_URL, json=payload.model_dump())
-
     return response.json()
