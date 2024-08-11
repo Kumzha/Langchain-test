@@ -1,0 +1,5 @@
+pinecone-client[grpc]
+fastapi
+uvicorn
+python-dotenv
+streamlit
